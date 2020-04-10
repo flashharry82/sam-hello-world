@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0-oas3"
+  title: HTTP API
+paths:
+  /unmanaged-instances:
+    get:
+      summary: lists unmanaged instances
+      operationId: listUnmanagedInstances
+      description: List of unmanaged instances
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: GET
+        uri:  "arn:aws:lambda:eu-west-1:450849687585:function:sam-hello-world-UnmangedInstancesFunction-4SUW84WM09XI/invocations"
+        credentials : ""
+        responses :
+          2\\d{2} :
+            statusCode : "200"
+            responseTemplates :
+              application/json : "person"
+          default :
+            statusCode : "400"

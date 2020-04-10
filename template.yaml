@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: HTTP API
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "http://alderhilldigital.info"
+                    
+  UnmanagedInstancesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: unmanaged-instances/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        UnmanagedInstancesEvent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: GET
+            Path: /unmanaged-instances
+      Policies:
+      - AmazonEC2ReadOnlyAccess
+      - AmazonSSMReadOnlyAccess
+
+
+Outputs:
+  UnmanagedInstancesApi:
+    Description: "API Gateway endpoint URL for Unmanaged instances function"
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/unmanaged-instances"
+  UnmanagedInstancesFunction:
+    Description: "Unmanaged Instance Function ARN"
+    Value: !GetAtt UnmanagedInstancesFunction.Arn
+  UnmanagedInstancesFunctionIamRole:
+    Description: "Implicit IAM Role created for Unmanaged Instances function"
+    Value: !GetAtt UnmanagedInstancesFunctionRole.Arn

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Hello World</title>
+</head>
+<body>
+  <h1 id="firstHeader"></h1>
+  
+  <div id="non-managed-instances"></div>
+  <script type="text/javascript">
+    // Create a request variable and assign a new XMLHttpRequest object to it.
+    var request = new XMLHttpRequest()
+
+    // Open a new connection, using the GET request on the URL endpoint
+    request.open('GET', 'https://jqenccjf8f.execute-api.eu-west-1.amazonaws.com/httpApi', true)
+
+    request.onload = function() {
+      // Begin accessing JSON data here
+      var data = JSON.parse(this.response)
+
+      if (request.status >= 200 && request.status < 400) {
+        console.log(data)
+        document.getElementById("firstHeader").innerHTML = data;
+      } else {
+        console.log('error')
+      }
+    }
+
+    // Send request
+    request.send()
+    
+    
+    var request2 = new XMLHttpRequest()
+
+    // Open a new connection, using the GET request on the URL endpoint
+    request2.open('GET', 'https://l9jlqhgqd7.execute-api.eu-west-1.amazonaws.com/unmanaged-instances', true)
+
+    request2.onload = function() {
+      // Begin accessing JSON data here
+      var data2 = JSON.parse(this.response)
+
+      if (request2.status >= 200 && request2.status < 400) {
+        console.log(data2)
+        document.getElementById("non-managed-instances").innerHTML = data2;
+      } else {
+        console.log('error')
+      }
+    }
+
+    // Send request
+    request2.send()
+    
+    
+    
+    
+  </script>
+</body>
+</html>
